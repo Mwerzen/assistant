@@ -1,6 +1,6 @@
 
 global debug
-debug = False
+debug = True
 
 
 def debug(message):
