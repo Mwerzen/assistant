@@ -14,4 +14,4 @@ rm -r /assistant/python/*.py
 cp *.py /assistant/python/.
 cp secret.txt /assistant/python/.
 chmod 755 /assistant/python/*
-nohup /assistant/python/Controller.py >> /tmp/python.out 2>&1&
+nohup python3 /assistant/python/Controller.py >> /tmp/python.out 2>&1&
