@@ -1,0 +1,14 @@
+#!/bin/bash
+# AssistantCore
+#
+# description: Assistant Core
+
+case $1 in
+    start)
+        /bin/bash java -jar /assistant/core/assistant.jar
+    ;;
+    stop)
+        /bin/bash pkill assistant*.jar
+    ;;
+esac
+exit 0

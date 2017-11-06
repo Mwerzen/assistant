@@ -1,0 +1,2 @@
+C:\Users\Mike\Documents\Development\Tools\Putty\pscp.exe "C:\Users\Mike\Documents\Development\Projects\Kotlin - Assistant\assist\kotlin\src\main\resources\application-default.properties" tessa@Tessa:/home/tessa/projects/assistant/kotlin/src/main/resources/application-default.properties
+C:\Users\Mike\Documents\Development\Tools\Putty\pscp.exe "C:\Users\Mike\Documents\Development\Projects\Kotlin - Assistant\assist\python\secret.txt" tessa@Tessa:/home/tessa/projects/assistant/python/secret.txt
