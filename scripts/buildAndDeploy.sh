@@ -1,3 +1,4 @@
+sudo service assistant-core stop
 sudo pkill -f assistant.jar
 cd ~/projects/assistant
 git pull
@@ -9,7 +10,7 @@ chmod 744 /assistant/core/assistant.jar
 sudo service assistant-core start
 
 cd ~/projects/assistant/python
-rm -r /assistant/python/.
+rm -r /assistant/python/*.py
 cp *.py /assistant/python/.
 cp secret.txt /assistant/python/.
 nohup /assistant/python/Controller.py >> /tmp/python.out 2>&1&
