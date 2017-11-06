@@ -1,4 +1,3 @@
-sudo service assistant-core stop
 sudo pkill -f assistant.jar
 cd ~/projects/assistant
 git pull
@@ -7,7 +6,7 @@ mvn clean install
 rm /assistant/core/assistant.jar
 cp target/assistant*.jar /assistant/core/assistant.jar
 chmod 744 /assistant/core/assistant.jar
-sudo service assistant-core start
+nohup java -jar /assistant/core/assistant.jar >> /tmp/core.out 2>&1&
 
 cd ~/projects/assistant/python
 rm -r /assistant/python/*.py
