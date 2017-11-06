@@ -1,14 +1,14 @@
 #!/bin/bash
-# AssistantCore
+# Assistant
 #
 # description: Assistant Core
 
 case $1 in
     start)
-        /bin/bash java -jar /assistant/core/assistant.jar
+        nohup java -jar /assistant/core/assistant.jar >> /tmp/core.out 2>&1&
     ;;
     stop)
-        /bin/bash pkill assistant*.jar
+        /bin/bash pkill *assistant*.jar
     ;;
 esac
 exit 0

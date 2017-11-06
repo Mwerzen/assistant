@@ -1,1 +1,1 @@
-pkill assistant*.jar
+sudo service assistant-core stop

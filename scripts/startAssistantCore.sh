@@ -1,1 +1,1 @@
-java -jar ~/projects/assistant/assist/target/assistant*.jar
+sudo service assistant-core start
