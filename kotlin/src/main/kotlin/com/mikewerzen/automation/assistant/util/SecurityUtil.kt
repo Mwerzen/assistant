@@ -32,10 +32,6 @@ public class SecurityUtil
 
 	public fun validateToken(token: String)
 	{
-		//TODO Remove
-		if(environment.equals("nonprod"))
-			return;
-
 		var parts = token.split("-")
 
 		val timestamp = NumberUtils.toLong(parts[0]);
@@ -45,10 +41,15 @@ public class SecurityUtil
 		val computedToken = DigestUtils.sha1Hex(secret + timestamp)
 
 		logger.info("Token: " + token + " ComputedToken: " + computedToken)
-		logger.info("Time: " + timestamp + " Diff: " + timeDiff);
+		logger.info("Time: " + timestamp + " CurrTime: " + System.currentTimeMillis() + " Diff: " + timeDiff);
 
 		if (!computedToken.equals(token) || timeDiff > allowedTimeRange!!)
 		{
+			if(environment.equals("nonprod"))
+			{
+				logger.info("Login Failed, Continuing in Dev");
+				return;
+			}
 			throw RuntimeException("Could not Authenticate");
 		}
 
