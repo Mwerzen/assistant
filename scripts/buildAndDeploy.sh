@@ -1,4 +1,4 @@
-sudo service assistant-core stop
+sudo pkill -f assistant.jar
 cd ~/projects/assistant
 git pull
 cd kotlin
