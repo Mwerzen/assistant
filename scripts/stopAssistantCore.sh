@@ -1,1 +1,0 @@
-sudo service assistant-core stop
