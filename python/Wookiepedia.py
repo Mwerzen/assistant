@@ -30,13 +30,13 @@ def check_response(response):
 def get_wookiepedia_abstract(request):
     response = requests.get(build_search_url(request.args))
     check_response(response)
-    body = json.loads(response.content)
+    body = response.json()
 
     article_id = body["items"][0]["id"]
 
     response = requests.get(build_detail_url(article_id))
     check_response(response)
-    body = json.loads(response.content)
+    body = response.json()
 
     resp = Response()
     resp.short = body["items"][str(article_id)]["title"]
