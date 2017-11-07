@@ -35,3 +35,4 @@ __pycache__
 application-default.properties
 application-prod.properties
 secret.txt
+*.bat
