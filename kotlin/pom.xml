@@ -81,6 +81,16 @@
 			<artifactId>google-oauth-client-jetty</artifactId>
 			<version>1.22.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-language</artifactId>
+			<version>v1beta1-rev5-1.22.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -1,5 +1,24 @@
 package com.mikewerzen.automation.assistant.endpoint
 
-data class AutomationRequest(val text: String, val location: String, val encryption: String?);
+enum class PrivacyLevel
+{ ALONE, PRIVATE, PUBLIC }
 
-data class AutomationResponse(val shortResponse: String?, val longResponse: String?,  val data: String?);
+enum class Location
+{ ROOM, HOME, CAR, WORK, GENERAL }
+
+enum class Device
+{ CLI, CLIENT, WEBPAGE, CELL, WATCH, TV, SPEAKER }
+
+data class AutomationRequest(
+		val inputText: String,
+		var privacyLevel: PrivacyLevel = PrivacyLevel.PUBLIC,
+		var location: Location = Location.GENERAL,
+		var device: Device = Device.WEBPAGE
+)
+
+data class AutomationResponse(
+		val text: String,
+		val description: String? = null,
+		val page: String? = null,
+		val image: String? = null
+);

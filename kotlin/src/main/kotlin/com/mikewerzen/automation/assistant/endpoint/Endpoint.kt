@@ -27,13 +27,13 @@ public class EndpointController
 		auth(token);
 
 
-		val actionRequest = ActionRequest("search", Arrays.asList(request.text), request.location);
+		val actionRequest = ActionRequest("search", Arrays.asList("Test"), "Test");
 
 		//val actionResponse = ActionResponse("", sheets.data, "")
 
 		val actionResponse = wookie.performAction(actionRequest);
 
-		return AutomationResponse(actionResponse.shortResponse, actionResponse.longResponse, null);
+		return AutomationResponse("Hello");
 	}
 
 
