@@ -2,23 +2,23 @@ package com.mikewerzen.automation.assistant.core.nlp.container.syntax
 
 enum class PartOfSpeechTag private constructor(private val tag: String)
 {
-	Any("*"),
-	Adverb("ADV"),
-	Adposition("ADP"),
-	Adjective("ADJ"),
-	Conjunction("CONJ"),
-	Article("DET"),
-	Interjection("X"),
-	Noun("NOUN"),
-	Number("NUM"),
-	Pronoun("PRON"),
-	Participle("PRT"),
-	Punctuation("PUNCT"),
-	Verb("VERB");
+	ANY("*"),
+	ADVERB("ADV"),
+	ADPOSITION("ADP"),
+	ADJECTIVE("ADJ"),
+	CONJUNCTION("CONJ"),
+	DETERMINER("DET"),
+	INTERJECTION("X"),
+	NOUN("NOUN"),
+	NUMBER("NUM"),
+	PRONOUN("PRON"),
+	PARTICIPLE("PRT"),
+	PUNCTUATION("PUNCT"),
+	VERB("VERB");
 
 	fun isEquivelentTo(other: PartOfSpeechTag): Boolean
 	{
-		return this == other || this == Any || other == Any
+		return this == other || this == ANY || other == ANY
 	}
 
 

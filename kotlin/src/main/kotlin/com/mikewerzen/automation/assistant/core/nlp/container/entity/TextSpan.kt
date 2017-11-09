@@ -1,20 +1,9 @@
 package com.mikewerzen.automation.assistant.core.nlp.container.entity
 
-class TextSpan(content: String, offset: Int)
-{
-	var content: String? = null
-		internal set
-	var offset: Int = 0
-		internal set
+data class TextSpan(
 
-	init
-	{
-		this.content = content
-		this.offset = offset
-	}
+	var content: String? = null,
 
-	override fun toString(): String
-	{
-		return "TextSpan [content=$content, offset=$offset]"
-	}
-}
+	var beginOffset: Int? = null
+
+)

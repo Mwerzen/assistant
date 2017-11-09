@@ -1,19 +1,18 @@
 package com.mikewerzen.automation.assistant.core.nlp.container.syntax
 
-class PartOfSpeech(tag: PartOfSpeechTag)
-{
-	var tag: PartOfSpeechTag? = null
-		internal set
+data class PartOfSpeech(
 
-	init
-	{
-		this.tag = tag
-	}
+	var tag: PartOfSpeechTag? = null,
+	var aspect: Aspect? = null,
+	var case: Case? = null,
+	var form: Form? = null,
+	var gender: Gender? = null,
+	var mood: Mood? = null,
+	var number: Number? = null,
+	var person: Person? = null,
+	var proper: Proper? = null,
+	var reciprocity: Reciprocity? = null,
+	var tense: Tense? = null,
+	var voice: Voice? = null
 
-	override fun toString(): String
-	{
-		return "PartOfSpeech [tag=$tag]"
-	}
-
-
-}
+)

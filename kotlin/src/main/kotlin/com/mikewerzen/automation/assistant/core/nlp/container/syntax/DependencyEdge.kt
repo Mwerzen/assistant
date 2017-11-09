@@ -1,23 +1,9 @@
 package com.mikewerzen.automation.assistant.core.nlp.container.syntax
 
-class DependencyEdge(parentTokenIndex: Int, dependencyType: DependencyType)
-{
-	var parentTokenIndex: Int = 0
-		internal set
+data class DependencyEdge
+(
+	var headTokenIndex: Int = 0,
 
-	var dependencyType: DependencyType? = null
-		internal set
+	var label: Label? = null
 
-	init
-	{
-		this.parentTokenIndex = parentTokenIndex
-		this.dependencyType = dependencyType
-	}
-
-	override fun toString(): String
-	{
-		return "DependencyEdge [parentTokenIndex=$parentTokenIndex, dependencyType=$dependencyType]"
-	}
-
-
-}
+)

@@ -1,21 +1,19 @@
 package com.mikewerzen.automation.assistant.core.nlp.container.syntax
 
+import com.mikewerzen.automation.assistant.core.nlp.container.entity.TextSpan
 import java.util.ArrayList
 import java.util.Collections
 
-import com.mikewerzen.automation.assistant.core.nlp.container.syntax.DependencyType.*
+import com.mikewerzen.automation.assistant.core.nlp.container.syntax.Label.*
 
-class Token(index: Int, text: Text, partOfSpeech: PartOfSpeech, dependencyEdge: DependencyEdge,
-			lemma: Lemma) : Comparable<Token>
+class Token(text: TextSpan, partOfSpeech: PartOfSpeech, dependencyEdge: DependencyEdge,
+			lemma: String) : Comparable<Token>
 {
-	var positionInSentence: Int = 0
-		internal set
-
 	var parent: Token? = null
 
 	protected var children: MutableList<Token> = ArrayList()
 
-	var text: Text? = null
+	var text: TextSpan? = null
 		internal set
 
 	var partOfSpeech: PartOfSpeech? = null
@@ -24,12 +22,11 @@ class Token(index: Int, text: Text, partOfSpeech: PartOfSpeech, dependencyEdge: 
 	var dependencyEdge: DependencyEdge? = null
 		internal set
 
-	var lemma: Lemma? = null
+	var lemma: String? = null
 		internal set
 
 	init
 	{
-		this.positionInSentence = index
 		this.text = text
 		this.partOfSpeech = partOfSpeech
 		this.dependencyEdge = dependencyEdge
@@ -37,28 +34,28 @@ class Token(index: Int, text: Text, partOfSpeech: PartOfSpeech, dependencyEdge: 
 	}
 
 	val isRoot: Boolean
-		get() = parent == null && dependencyType == DependencyType.Root
+		get() = parent == null && label == Label.Root
 
 	val childrenPhrase: String
-		get() = getChildrenPhrase(arrayOf(DependencyType.Any), arrayOf(PartOfSpeechTag.Any))
+		get() = getChildrenPhrase(arrayOf(Label.Any), arrayOf(PartOfSpeechTag.ANY))
 
-	fun getChildrenPhrase(types: Array<DependencyType>): String
+	fun getChildrenPhrase(types: Array<Label>): String
 	{
-		return getChildrenPhrase(types, arrayOf(PartOfSpeechTag.Any))
+		return getChildrenPhrase(types, arrayOf(PartOfSpeechTag.ANY))
 	}
 
 	fun getChildrenPhrase(tags: Array<PartOfSpeechTag>): String
 	{
-		return getChildrenPhrase(arrayOf(DependencyType.Any), tags)
+		return getChildrenPhrase(arrayOf(Label.Any), tags)
 	}
 
-	private fun getChildrenPhrase(types: Array<DependencyType>, tags: Array<PartOfSpeechTag>): String
+	private fun getChildrenPhrase(types: Array<Label>, tags: Array<PartOfSpeechTag>): String
 	{
 		val result = StringBuilder()
 
 		getLeadingChildrenPhrase(types, tags, result)
 
-		result.append(text!!.word).append(" ")
+		result.append(text!!.content).append(" ")
 
 		getTrailingChildrenPhrase(types, tags, result)
 
@@ -69,14 +66,14 @@ class Token(index: Int, text: Text, partOfSpeech: PartOfSpeech, dependencyEdge: 
 		get()
 		{
 			val result = StringBuilder()
-			getLeadingChildrenPhrase(arrayOf(DependencyType.Any), arrayOf(PartOfSpeechTag.Any), result)
+			getLeadingChildrenPhrase(arrayOf(Label.Any), arrayOf(PartOfSpeechTag.ANY), result)
 			return result.toString()
 		}
 
-	private fun getLeadingChildrenPhrase(types: Array<DependencyType>, tags: Array<PartOfSpeechTag>, result: StringBuilder)
+	private fun getLeadingChildrenPhrase(types: Array<Label>, tags: Array<PartOfSpeechTag>, result: StringBuilder)
 	{
 		children
-				.filter { it.positionInSentence < positionInSentence && it.dependencyType!!.isInArray(*types) && it.partOfSpeech!!.tag!!.isInArray(*tags) }
+				.filter { it.text!!.beginOffset!! < text!!.beginOffset!! && it.label!!.isInArray(*types) && it.partOfSpeech!!.tag!!.isInArray(*tags) }
 				.forEach { result.append(it.getChildrenPhrase(types, tags)).append(" ") }
 	}
 
@@ -84,23 +81,23 @@ class Token(index: Int, text: Text, partOfSpeech: PartOfSpeech, dependencyEdge: 
 		get()
 		{
 			val result = StringBuilder()
-			getTrailingChildrenPhrase(arrayOf(DependencyType.Any), arrayOf(PartOfSpeechTag.Any), result)
+			getTrailingChildrenPhrase(arrayOf(Label.Any), arrayOf(PartOfSpeechTag.ANY), result)
 			return result.toString()
 		}
 
-	private fun getTrailingChildrenPhrase(types: Array<DependencyType>, tags: Array<PartOfSpeechTag>, result: StringBuilder)
+	private fun getTrailingChildrenPhrase(types: Array<Label>, tags: Array<PartOfSpeechTag>, result: StringBuilder)
 	{
 		children
-				.filter { it.positionInSentence > positionInSentence && it.dependencyType!!.isInArray(*types) && it.partOfSpeech!!.tag!!.isInArray(*tags) }
+				.filter { it.text!!.beginOffset!! > text!!.beginOffset!! && it.label!!.isInArray(*types) && it.partOfSpeech!!.tag!!.isInArray(*tags) }
 				.forEach { result.append(it.getChildrenPhrase(types, tags)).append(" ") }
 	}
 
 	val isSubjectBeforeVerb: Boolean
 		get() = isOtherTypeBefore(NominalSubject, NominalSubjectInPassiveConstruction)
 
-	fun isOtherTypeBefore(vararg types: DependencyType): Boolean
+	fun isOtherTypeBefore(vararg types: Label): Boolean
 	{
-		return directChildren.any { it.positionInSentence < positionInSentence && it.dependencyType!!.isInArray(*types) }
+		return directChildren.any { it.text!!.beginOffset!! < text!!.beginOffset!! && it.label!!.isInArray(*types) }
 	}
 
 	val subjects: List<Token>
@@ -139,17 +136,17 @@ class Token(index: Int, text: Text, partOfSpeech: PartOfSpeech, dependencyEdge: 
 	val modifiers: List<Token>
 		get()
 		{
-			val modifiers = children.filter { it.partOfSpeech!!.tag!!.isInArray(PartOfSpeechTag.Adjective, PartOfSpeechTag.Adverb) }
+			val modifiers = children.filter { it.partOfSpeech!!.tag!!.isInArray(PartOfSpeechTag.ADJECTIVE, PartOfSpeechTag.ADVERB) }
 
 			return modifiers
 		}
 
-	private fun getChildDependenciesOfTypeRecursive(vararg types: DependencyType): List<Token>
+	private fun getChildDependenciesOfTypeRecursive(vararg types: Label): List<Token>
 	{
 		return getChildDependenciesOfTypeRecursiveWithFollowLinks(types, arrayOf(Preposition, NonfiniteClauselikeComplement))
 	}
 
-	private fun getChildDependenciesOfTypeRecursiveWithFollowLinks(types: Array<out DependencyType>, links: Array<DependencyType>): List<Token>
+	private fun getChildDependenciesOfTypeRecursiveWithFollowLinks(types: Array<out Label>, links: Array<Label>): List<Token>
 	{
 		val childrenOfSearchType = ArrayList<Token>()
 
@@ -164,12 +161,12 @@ class Token(index: Int, text: Text, partOfSpeech: PartOfSpeech, dependencyEdge: 
 
 	}
 
-	private fun getChildDependenciesOfType(vararg types: DependencyType): List<Token>
+	private fun getChildDependenciesOfType(vararg types: Label): List<Token>
 	{
 		val childrenOfType = ArrayList<Token>()
 		for (token in children)
 		{
-			types.filter { it == token.dependencyType }.forEach { childrenOfType.add(token) }
+			types.filter { it == token.label }.forEach { childrenOfType.add(token) }
 		}
 
 		return childrenOfType
@@ -183,25 +180,25 @@ class Token(index: Int, text: Text, partOfSpeech: PartOfSpeech, dependencyEdge: 
 		var first = root
 		for (child in root.children)
 		{
-			if (first.positionInSentence == 0)
+			if (first.text!!.beginOffset!! == 0)
 				return first
 
 			val lowestInSubtree = getFirstTokenInSubtree(child)
 
-			if (lowestInSubtree.positionInSentence < first.positionInSentence)
+			if (lowestInSubtree.text!!.beginOffset!! < first.text!!.beginOffset!!)
 				first = lowestInSubtree
 		}
 
 		return first
 	}
 
-	val dependencyType: DependencyType?
-		get() = dependencyEdge!!.dependencyType
+	val label: Label?
+		get() = dependencyEdge!!.label
 
 	override fun toString(): String
 	{
 		return "Token:\n" +
-				"   Index=" + positionInSentence + "\n" +
+				"   Index=" + text!!.beginOffset!! + "\n" +
 				"   ParentExists=" + (parent != null) + "\n" +
 				"   Text=" + text + "\n" +
 				"   PartOfSpeech=" + partOfSpeech + "\n" +
@@ -248,14 +245,14 @@ class Token(index: Int, text: Text, partOfSpeech: PartOfSpeech, dependencyEdge: 
 		}
 
 	val word: String?
-		get() = text!!.word
+		get() = text!!.content
 
 	override fun compareTo(other: Token): Int
 	{
 		return when
 		{
-			other.positionInSentence < this.positionInSentence -> 1
-			other.positionInSentence == this.positionInSentence -> 0
+			other.text!!.beginOffset!! < this.text!!.beginOffset!! -> 1
+			other.text!!.beginOffset!! == this.text!!.beginOffset!! -> 0
 			else -> -1
 		}
 	}

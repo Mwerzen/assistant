@@ -8,7 +8,7 @@ import com.mikewerzen.automation.assistant.endpoint.AutomationResponse
 
 data class AutomationContext(
 		val request : AutomationRequest,
-		val response: AutomationResponse,
+		var response: AutomationResponse? = null,
 
 		//NLP
 		var entities : List<Entity>? = null,

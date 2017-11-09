@@ -6,6 +6,7 @@ import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.sheets.v4.Sheets
+import com.mikewerzen.automation.assistant.client.google.util.GoogleUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -15,7 +16,7 @@ import java.io.IOException
 class SheetsClient
 {
 	@Autowired
-	private val googleSecurityUtil: GoogleSecurityUtil? = null
+	private val googleUtil: GoogleUtil? = null
 
 	private val JSON_FACTORY: JsonFactory
 
@@ -66,7 +67,7 @@ class SheetsClient
 		@Throws(IOException::class)
 		get()
 		{
-			val credential = googleSecurityUtil!!.authorize()
+			val credential = googleUtil!!.getGoogleCredential()
 			return Sheets.Builder(HTTP_TRANSPORT!!, JSON_FACTORY, credential)
 					.setApplicationName(applicationName)
 					.build()

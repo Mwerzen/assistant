@@ -1,19 +1,14 @@
 package com.mikewerzen.automation.assistant.core.nlp.container.entity
 
-class EntityMention(textSpan: TextSpan)
-{
-	var textSpan: TextSpan? = null
-		internal set
+import com.mikewerzen.automation.assistant.core.nlp.container.sentiment.Sentiment
 
-	init
-	{
-		this.textSpan = textSpan
-	}
+data class EntityMention
+(
+		var text: TextSpan? = null,
 
-	override fun toString(): String
-	{
-		return "EntityMention [textSpan=$textSpan]"
-	}
+		var type: MentionType? = null,
 
+		var sentiment: Sentiment? = null
 
-}
+)
+
