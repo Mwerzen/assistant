@@ -195,17 +195,6 @@ class Token(text: TextSpan, partOfSpeech: PartOfSpeech, dependencyEdge: Dependen
 	val label: Label?
 		get() = dependencyEdge!!.label
 
-	override fun toString(): String
-	{
-		return "Token:\n" +
-				"   Index=" + text!!.beginOffset!! + "\n" +
-				"   ParentExists=" + (parent != null) + "\n" +
-				"   Text=" + text + "\n" +
-				"   PartOfSpeech=" + partOfSpeech + "\n" +
-				"   DependencyEdge=" + dependencyEdge + "\n" +
-				"   Lemma=" + lemma
-	}
-
 	fun addChild(child: Token)
 	{
 		children.add(child)
@@ -256,5 +245,11 @@ class Token(text: TextSpan, partOfSpeech: PartOfSpeech, dependencyEdge: Dependen
 			else -> -1
 		}
 	}
+
+	override fun toString(): String
+	{
+		return "Token(children=$children, text=$text, partOfSpeech=$partOfSpeech, dependencyEdge=$dependencyEdge, lemma=$lemma)"
+	}
+
 
 }

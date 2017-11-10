@@ -5,6 +5,7 @@ enum class InteractorType
 	Person,
 	Computer,
 	Environment,
-	Timer
+	Timer,
+	Automation
 
 }
