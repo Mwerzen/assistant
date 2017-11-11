@@ -1,7 +1,7 @@
 package com.mikewerzen.automation.assistant.core
 
 import com.mikewerzen.automation.assistant.core.awareness.container.Interactor
-import com.mikewerzen.automation.assistant.core.decision.container.Action
+import com.mikewerzen.automation.assistant.core.action.Action
 import com.mikewerzen.automation.assistant.core.decision.container.Rule
 import com.mikewerzen.automation.assistant.core.nlp.container.entity.Entity
 import com.mikewerzen.automation.assistant.core.nlp.container.sentiment.Sentiment

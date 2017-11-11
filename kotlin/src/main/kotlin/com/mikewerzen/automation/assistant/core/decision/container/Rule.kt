@@ -1,12 +1,13 @@
 package com.mikewerzen.automation.assistant.core.decision.container
 
+import com.mikewerzen.automation.assistant.core.action.Action
 import java.util.HashMap
 
 class Rule
 {
 	var actionToTake: Action? = null
 
-	private val attributes = HashMap<Field, String>()
+	private val attributes = HashMap<String, String>()
 
 	constructor()
 	{
@@ -20,13 +21,19 @@ class Rule
 
 	fun addField(field: Field, value: String): Rule
 	{
-		attributes.put(field, value)
+		attributes.put(field.toString().toUpperCase(), value.toUpperCase())
 		return this
 	}
 
 	fun addField(field: Field, value: Value): Rule
 	{
-		attributes.put(field, value.toString())
+		attributes.put(field.toString().toUpperCase(), value.toString().toUpperCase())
+		return this
+	}
+
+	fun addField(field: Object, value: Value): Rule
+	{
+		attributes.put(field.toString().toUpperCase(), value.toString().toUpperCase())
 		return this
 	}
 
@@ -45,14 +52,17 @@ class Rule
 		}
 
 		return if (attributes.size != 0)
-			match / attributes.size
+		{
+			match
+			//	match / attributes.size
+		}
 		else
 			0f
 	}
 
 	fun getValueForField(field: Field): String?
 	{
-		return attributes[field]
+		return attributes[field.toString().toUpperCase()]
 	}
 
 	override fun toString(): String

@@ -5,8 +5,9 @@ import com.mikewerzen.automation.assistant.core.nlp.container.syntax.ClauseType
 
 import java.util.ArrayList
 
-import com.mikewerzen.automation.assistant.core.decision.container.Action.*
+import com.mikewerzen.automation.assistant.core.action.Action.*
 import com.mikewerzen.automation.assistant.core.decision.container.Field.*
+import com.mikewerzen.automation.assistant.core.action.Action
 
 object RuleSet
 {
@@ -19,9 +20,13 @@ object RuleSet
 	private val answerQuestion = Rule(AnswerQuestion).addField(SentenceType, ClauseType.WhInterrogative.toString())
 	private val genericQuestion = Rule(AnswerQuestion).addField(SentenceType, ClauseType.Question.toString())
 	private val define = Rule(AnswerQuestion).addField(Verb, "define")
-	private val show = Rule(ShowPicture).addField(Verb, "show")
-	private val display = Rule(ShowPicture).addField(Verb, "display")
-	private val showPicture = Rule(PlayVideo).addField(Subject, "Automation").addField(Verb, "show")
+
+	private val show = Rule(ShowPicture)
+			.addField(Target, "Automation")
+			.addField(Verb, "show")
+			.addField(Verb, "display")
+			.addField(DirectObject, "picture")
+			.addField(DirectObject, "pictures")
 
 
 	fun matchRule(searchRule: Rule): Action
@@ -32,7 +37,7 @@ object RuleSet
 		for (rule in rules)
 		{
 			val matchPercentage = rule.getMatchPercentage(searchRule)
-			println("Action: " + rule.actionToTake + " Perc: " + matchPercentage)
+			println("ActionExecutor: " + rule.actionToTake + " Perc: " + matchPercentage)
 			if (matchPercentage > bestMatchPercentage)
 			{
 				bestMatchRule = rule

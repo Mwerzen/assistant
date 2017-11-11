@@ -18,7 +18,7 @@ data class AutomationRequest(
 
 data class AutomationResponse(
 		val text: String,
-		val description: String? = null,
-		val page: String? = null,
-		val image: String? = null
+		var description: String? = null,
+		var page: String? = null,
+		var image: String? = null
 );

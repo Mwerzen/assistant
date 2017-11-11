@@ -115,6 +115,13 @@ class Token(text: TextSpan, partOfSpeech: PartOfSpeech, dependencyEdge: Dependen
 	val directObjectOrUnclassifiableDependents: List<Token>
 		get() = getChildDependenciesOfTypeRecursive(DirectObject, UnclassifiableDependent)
 
+	fun directObjectOrUnclassifiableDependentsString(): String
+	{
+		var res = ""
+		directObjectOrUnclassifiableDependents.forEach { res += it.childrenPhrase.trim() + " "}
+		return res
+	}
+
 	val indirectObjects: List<Token>
 		get() = getChildDependenciesOfTypeRecursive(IndirectObject)
 
@@ -129,6 +136,13 @@ class Token(text: TextSpan, partOfSpeech: PartOfSpeech, dependencyEdge: Dependen
 
 	val possessiveObjects: List<Token>
 		get() = getChildDependenciesOfTypeRecursive(PossessiveObject)
+
+	fun possessiveObjectsOrUnclassifiableDependentsString(): String
+	{
+		var res = ""
+		getChildDependenciesOfTypeRecursive(PossessiveObject, UnclassifiableDependent).forEach { res += it.childrenPhrase.trim() + " "}
+		return res
+	}
 
 	val timeModifiers: List<Token>
 		get() = getChildDependenciesOfTypeRecursive(TimeModifier)

@@ -1,5 +1,6 @@
 package com.mikewerzen.automation.assistant.core
 
+import com.mikewerzen.automation.assistant.core.action.ActionRouter
 import com.mikewerzen.automation.assistant.core.awareness.AwarenessProcessor
 import com.mikewerzen.automation.assistant.core.decision.DecisionProcessor
 import com.mikewerzen.automation.assistant.core.nlp.NaturalLanguageProcessor
@@ -23,6 +24,9 @@ class AutomationCore
 	@Autowired
 	private var decision : DecisionProcessor? = null
 
+	@Autowired
+	private var actionRouter : ActionRouter? = null
+
 
 	fun processRequest(request: AutomationRequest): AutomationResponse
 	{
@@ -42,7 +46,7 @@ class AutomationCore
 		infact allow the automation engine to determine if there are others in the room.	 */
 		awareness!!.analyze(context)
 
-		/*		::Make Action Decision::
+		/*		::Make ActionExecutor Decision::
 
 		Uses the NLP analysis and Awareness Analysis to build out a prototype "rule", detailing things of
 		the form:
@@ -50,7 +54,8 @@ class AutomationCore
 		These rules are then matched against a list of existing rules to determine which action to take.		*/
 		decision!!.analyze(context)
 
-		//Execute Action
+		//Execute ActionExecutor
+		actionRouter!!.executeAction(context)
 
 		//Persist Result into DB
 
@@ -61,7 +66,7 @@ class AutomationCore
 
 		logger.info(context.toString())
 
-		return AutomationResponse("Hello");
+		return context.response!!
 	}
 
 

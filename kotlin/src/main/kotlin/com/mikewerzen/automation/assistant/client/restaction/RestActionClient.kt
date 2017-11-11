@@ -1,7 +1,7 @@
 package com.mikewerzen.automation.assistant.client.restaction
 
-import com.mikewerzen.automation.assistant.action.ActionRequest
-import com.mikewerzen.automation.assistant.action.ActionResponse
+import com.mikewerzen.automation.assistant.core.AutomationContext
+import com.mikewerzen.automation.assistant.endpoint.AutomationResponse
 import com.mikewerzen.automation.assistant.util.SecurityUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpEntity
@@ -13,20 +13,21 @@ import java.net.URI
 class RestActionClient
 {
 	@Autowired
-	lateinit var securityUtil : SecurityUtil
+	lateinit var securityUtil: SecurityUtil
 
 	val restTemplate = RestTemplate()
 
-	fun get(url: String, request: ActionRequest) : ActionResponse
+	fun get(url: String, context: AutomationContext): AutomationContext
 	{
-		val restRequest = RestActionRequest(request.text, request.args, request.location);
+		val restRequest = RestActionRequest(context.request.inputText, listOf(context.root!!.trailingChildrenPhrase), context.request.location.toString());
 
 		val restResponse = get(url, restRequest);
 
-		return ActionResponse(restResponse.short, restResponse.long, restResponse.page, restResponse.image);
+		context.response = AutomationResponse(restResponse.short!!, restResponse.long, restResponse.page, restResponse.image)
+		return context
 	}
 
-	fun get(url : String,  request: RestActionRequest) : RestActionResponse
+	fun get(url: String, request: RestActionRequest): RestActionResponse
 	{
 		val restRequest = RestActionRequest(request.text, request.args, request.location);
 

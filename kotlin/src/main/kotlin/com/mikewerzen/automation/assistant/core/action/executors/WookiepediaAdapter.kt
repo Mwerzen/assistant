@@ -1,15 +1,14 @@
-package com.mikewerzen.automation.assistant.action.wookiepedia
+package com.mikewerzen.automation.assistant.core.action.executors
 
-import com.mikewerzen.automation.assistant.action.Action
-import com.mikewerzen.automation.assistant.action.ActionRequest
-import com.mikewerzen.automation.assistant.action.ActionResponse
 import com.mikewerzen.automation.assistant.client.restaction.RestActionClient
+import com.mikewerzen.automation.assistant.core.AutomationContext
+import com.mikewerzen.automation.assistant.core.action.ActionExecutor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class WookiepediaAdapter : Action
+class WookiepediaAdapter : ActionExecutor
 {
 	@Value("\${actions.wookie.url}")
 	lateinit private var url: String
@@ -17,7 +16,7 @@ class WookiepediaAdapter : Action
 	@Autowired
 	lateinit private var client: RestActionClient
 
-	override fun performAction(request: ActionRequest): ActionResponse
+	override fun execute(request: AutomationContext): AutomationContext
 	{
 		return client.get(url, request);
 	}

@@ -87,6 +87,7 @@ class GoogleNLPClient
 		val request = AnnotateTextRequest.newBuilder()
 				.setDocument(doc)
 				.setFeatures(features)
+				.setEncodingType(EncodingType.UTF16)
 				.build();
 
 		return getLanguageAPI().annotateText(request);
