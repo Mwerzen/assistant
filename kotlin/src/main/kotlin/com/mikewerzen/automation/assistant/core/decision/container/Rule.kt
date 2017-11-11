@@ -7,7 +7,7 @@ class Rule
 {
 	var actionToTake: Action? = null
 
-	private val attributes = HashMap<String, String>()
+	private val attributes = HashMap<String, MutableList<String>>()
 
 	constructor()
 	{
@@ -21,19 +21,27 @@ class Rule
 
 	fun addField(field: Field, value: String): Rule
 	{
-		attributes.put(field.toString().toUpperCase(), value.toUpperCase())
-		return this
+		return addField(field.toString(), value);
 	}
 
 	fun addField(field: Field, value: Value): Rule
 	{
-		attributes.put(field.toString().toUpperCase(), value.toString().toUpperCase())
-		return this
+		return addField(field.toString(), value.toString());
 	}
 
 	fun addField(field: Object, value: Value): Rule
 	{
-		attributes.put(field.toString().toUpperCase(), value.toString().toUpperCase())
+		return addField(field.toString(), value.toString());
+	}
+
+	fun addField(field: String, value: String) : Rule
+	{
+		if(attributes.get(field.toUpperCase()) == null)
+		{
+			attributes.set(field.toUpperCase(), ArrayList<String>())
+		}
+
+		attributes.get(field.toUpperCase())!!.add(value.toUpperCase())
 		return this
 	}
 
@@ -41,13 +49,16 @@ class Rule
 	{
 		var match = 0f
 
-		for ((key, value) in attributes)
+		for (attribute in attributes)
 		{
-			val attributeValueToMatch = ruleToMatch.attributes[key]
+			val otherValue = ruleToMatch.attributes[attribute.key]
 
-			if (attributeValueToMatch != null && value.toUpperCase() == attributeValueToMatch.toUpperCase())
+			for(myValue in attribute.value)
 			{
-				match++
+				if (otherValue != null && otherValue.contains(myValue))
+				{
+					match++
+				}
 			}
 		}
 
@@ -60,7 +71,7 @@ class Rule
 			0f
 	}
 
-	fun getValueForField(field: Field): String?
+	fun getValueForField(field: Field): MutableList<String>?
 	{
 		return attributes[field.toString().toUpperCase()]
 	}

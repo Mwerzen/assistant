@@ -3,6 +3,7 @@ package com.mikewerzen.automation.assistant.core.action.executors
 import com.mikewerzen.automation.assistant.client.restaction.RestActionClient
 import com.mikewerzen.automation.assistant.core.AutomationContext
 import com.mikewerzen.automation.assistant.core.action.ActionExecutor
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service
 @Service
 class WookiepediaAdapter : ActionExecutor
 {
+	private val logger = LoggerFactory.getLogger(this.javaClass)
+
 	@Value("\${actions.wookie.url}")
 	lateinit private var url: String
 
